@@ -1,0 +1,30 @@
+{
+  "passed": true,
+  "platform": "linux",
+  "frozen": false,
+  "checks": [
+    "GUI",
+    "platform data path",
+    "validation",
+    "create",
+    "search",
+    "filters",
+    "details",
+    "update",
+    "report",
+    "CSV",
+    "cancel deletion",
+    "backup",
+    "reopen",
+    "confirmed deletion",
+    "CSV chooser cancel",
+    "CSV preview cancel",
+    "CSV responsive worker",
+    "CSV rollback/retry",
+    "CSV import/results",
+    "CSV view refresh",
+    "full inventory export",
+    "CSV duplicate skip",
+    "CSV file errors"
+  ]
+}

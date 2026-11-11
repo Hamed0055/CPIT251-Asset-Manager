@@ -218,3 +218,12 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# CPIT251 local inventories and editor state
+.idea/
+.build/
+*.sqlite3
+*.sqlite3-*
+!examples/demo.sqlite3
+local-data/
+source-smoke.json

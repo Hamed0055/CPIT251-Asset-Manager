@@ -1,0 +1,8 @@
+﻿Asset ID,Name,Category,Serial number,Year,Purchase price (SAR),Status,Assigned person,Location,Notes
+,Lab Desktop 01,Desktop PC,DEMO-00001,2021,237.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Study Laptop 02,Laptop,demo-00001,2022,274.50,Assigned,Demo User 02,Network Room,Fictional demonstration equipment; no real personal data.
+,,Router,DEMO-00003,2023,311.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Access Switch 04,Switch,DEMO-00004,20xx,348.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Monitor / Keyboard Kit 05,Peripheral,DEMO-00005,2025,-12.00,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Demo UPS 06,Monitor,DEMO-00006,2020,422.50,Assigned,Demo User 06,Network Room,Fictional demonstration equipment; no real personal data.
+,Lab Desktop 07,Desktop PC,DEMO-00007,2021,459.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.

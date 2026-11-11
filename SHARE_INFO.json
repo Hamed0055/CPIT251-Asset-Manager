@@ -1,0 +1,11 @@
+{
+  "project": "CPIT251 IT Asset Inventory Manager",
+  "package": "source-only team handoff",
+  "source_commit": "47cf62a92a82b6e134dff3027194f586c5f13531",
+  "runtime": "Python >=3.11; Tkinter; SQLite >=3.37; no third-party runtime dependencies",
+  "entry_point": "main.py",
+  "start_here": "TEAM_GUIDE.md",
+  "shared_readme": "Adjusted for source-only distribution",
+  "privacy": "Local maintenance plan and backup path omitted; only fictional demo database included",
+  "windows_native_validation": "Not performed"
+}

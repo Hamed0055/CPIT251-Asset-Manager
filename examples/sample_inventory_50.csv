@@ -1,0 +1,51 @@
+﻿Asset ID,Name,Category,Serial number,Year,Purchase price (SAR),Status,Assigned person,Location,Notes
+,Lab Desktop 01,Desktop PC,DEMO-00001,2021,237.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Study Laptop 02,Laptop,DEMO-00002,2022,274.50,Assigned,Demo User 02,Network Room,Fictional demonstration equipment; no real personal data.
+,Training Router 03,Router,DEMO-00003,2023,311.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Access Switch 04,Switch,DEMO-00004,2024,348.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Monitor / Keyboard Kit 05,Peripheral,DEMO-00005,2025,385.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Demo UPS 06,Other,DEMO-00006,2020,422.50,Assigned,Demo User 06,Network Room,Fictional demonstration equipment; no real personal data.
+,Lab Desktop 07,Desktop PC,DEMO-00007,2021,459.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Study Laptop 08,Laptop,DEMO-00008,2022,496.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Training Router 09,Router,DEMO-00009,2023,533.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Access Switch 10,Switch,DEMO-00010,2024,570.50,Assigned,Demo User 10,Network Room,Fictional demonstration equipment; no real personal data.
+,Monitor / Keyboard Kit 11,Peripheral,DEMO-00011,2025,607.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Demo UPS 12,Other,DEMO-00012,2020,644.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Lab Desktop 13,Desktop PC,DEMO-00013,2021,681.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Study Laptop 14,Laptop,DEMO-00014,2022,718.50,Assigned,Demo User 14,Network Room,Fictional demonstration equipment; no real personal data.
+,Training Router 15,Router,DEMO-00015,2023,755.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Access Switch 16,Switch,DEMO-00016,2024,792.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Monitor / Keyboard Kit 17,Peripheral,DEMO-00017,2025,829.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Demo UPS 18,Other,DEMO-00018,2020,866.50,Assigned,Demo User 18,Network Room,Fictional demonstration equipment; no real personal data.
+,Lab Desktop 19,Desktop PC,DEMO-00019,2021,903.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Study Laptop 20,Laptop,DEMO-00020,2022,940.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Training Router 21,Router,DEMO-00021,2023,977.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Access Switch 22,Switch,DEMO-00022,2024,1014.50,Assigned,Demo User 22,Network Room,Fictional demonstration equipment; no real personal data.
+,Monitor / Keyboard Kit 23,Peripheral,DEMO-00023,2025,1051.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Demo UPS 24,Other,DEMO-00024,2020,1088.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Lab Desktop 25,Desktop PC,DEMO-00025,2021,1125.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Study Laptop 26,Laptop,DEMO-00026,2022,1162.50,Assigned,Demo User 26,Network Room,Fictional demonstration equipment; no real personal data.
+,Training Router 27,Router,DEMO-00027,2023,1199.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Access Switch 28,Switch,DEMO-00028,2024,1236.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Monitor / Keyboard Kit 29,Peripheral,DEMO-00029,2025,1273.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Demo UPS 30,Other,DEMO-00030,2020,1310.50,Assigned,Demo User 30,Network Room,Fictional demonstration equipment; no real personal data.
+,Lab Desktop 31,Desktop PC,DEMO-00031,2021,1347.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Study Laptop 32,Laptop,DEMO-00032,2022,1384.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Training Router 33,Router,DEMO-00033,2023,1421.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Access Switch 34,Switch,DEMO-00034,2024,1458.50,Assigned,Demo User 34,Network Room,Fictional demonstration equipment; no real personal data.
+,Monitor / Keyboard Kit 35,Peripheral,DEMO-00035,2025,1495.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Demo UPS 36,Other,DEMO-00036,2020,1532.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Lab Desktop 37,Desktop PC,DEMO-00037,2021,1569.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Study Laptop 38,Laptop,DEMO-00038,2022,1606.50,Assigned,Demo User 38,Network Room,Fictional demonstration equipment; no real personal data.
+,Training Router 39,Router,DEMO-00039,2023,1643.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Access Switch 40,Switch,DEMO-00040,2024,1680.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Monitor / Keyboard Kit 41,Peripheral,DEMO-00041,2025,1717.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Demo UPS 42,Other,DEMO-00042,2020,1754.50,Assigned,Demo User 42,Network Room,Fictional demonstration equipment; no real personal data.
+,Lab Desktop 43,Desktop PC,DEMO-00043,2021,1791.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Study Laptop 44,Laptop,DEMO-00044,2022,1828.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Training Router 45,Router,DEMO-00045,2023,1865.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Access Switch 46,Switch,DEMO-00046,2024,1902.50,Assigned,Demo User 46,Network Room,Fictional demonstration equipment; no real personal data.
+,Monitor / Keyboard Kit 47,Peripheral,DEMO-00047,2025,1939.50,Under Maintenance,,Workshop,Fictional demonstration equipment; no real personal data.
+,Demo UPS 48,Other,DEMO-00048,2020,1976.50,Retired,,Teaching Lab A,Fictional demonstration equipment; no real personal data.
+,Lab Desktop 49,Desktop PC,DEMO-00049,2021,2013.50,Available,,Library,Fictional demonstration equipment; no real personal data.
+,Study Laptop 50,Laptop,DEMO-00050,2022,2050.50,Assigned,Demo User 50,Network Room,Fictional demonstration equipment; no real personal data.
