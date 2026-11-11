@@ -39,7 +39,13 @@ try {
             throw "The Windows executable failed its smoke test."
         }
     }
+    $Launcher = Join-Path $Project "dist/windows.bat"
+    Copy-Item -LiteralPath (Join-Path $Project "windows.bat") -Destination $Launcher -Force
+    $Guide = Join-Path $Project "docs/WINDOWS_LAUNCHER.md"
+    $Portable = Join-Path $Project "dist/CPIT251-Asset-Manager-Windows-x64.zip"
+    Compress-Archive -LiteralPath @($Executable, $Launcher, $Guide) -DestinationPath $Portable -Force
     Write-Output "Executable: $Executable"
+    Write-Output "Portable ZIP: $Portable"
 } finally {
     Pop-Location
 }

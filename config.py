@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 APP_NAME = "IT Asset Inventory"
-VERSION = "1.0.0"
+VERSION = "1.0.1"
 DATA_FOLDER = "CPIT251-Asset-Manager-Reference"
 CATEGORIES = ("Desktop PC", "Laptop", "Router", "Switch", "Peripheral", "Other")
 STATUSES = ("Available", "Assigned", "Under Maintenance", "Retired")

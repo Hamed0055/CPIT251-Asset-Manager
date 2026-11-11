@@ -35,6 +35,12 @@ build and runtime check. The source launcher uses the system Python.
 
 ## Run on Windows
 
+The portable Windows release includes `CPIT251-Asset-Manager.exe` and
+`windows.bat`; extract the complete Windows ZIP and open either one. Python is
+bundled in the executable. See [Windows instructions](docs/WINDOWS_LAUNCHER.md).
+In a source checkout you can also run `windows.bat` with installed Python/Tk.
+
+
 For source use, install the official Python distribution with the Tcl/Tk
 component, then run `python main.py` in PowerShell. For the standalone
 `CPIT251-Asset-Manager.exe`, build on Windows with

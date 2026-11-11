@@ -19,7 +19,7 @@ jobs:
           cache-dependency-path: requirements-dev.txt
       - name: Install development tools on the runner
         run: python -m pip install -r requirements-dev.txt
-      - name: Run isolated backend tests
+      - name: Run isolated native Windows tests
         run: python -m pytest -q
       - name: Build and test the frozen GUI
         shell: pwsh
@@ -31,4 +31,6 @@ jobs:
           path: |
             dist/CPIT251-Asset-Manager.exe
             dist/windows-smoke.json
+            dist/windows.bat
+            dist/CPIT251-Asset-Manager-Windows-x64.zip
           if-no-files-found: error
