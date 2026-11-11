@@ -121,3 +121,21 @@ copying: **104 passed**, source and frozen GUI smoke passed with empty logs.
 See `evidence/csv-linux-validation.json`, `evidence/csv-linux-pytest.txt` and
 the two `evidence/csv-linux-{source,frozen}.json` receipts. The validation JSON
 records the exact binary checksum and the verified pre-change backup path.
+
+## Linux launcher release verification (2026-11-11)
+
+The source now includes a root `linux.sh`, a standard-library deterministic
+builder (`scripts/build_linux_sh.py`) and its Python bootstrap template.
+`tests/test_linux_launcher.py` adds eight subprocess cases: source launch from
+another directory, isolated standalone execution, temporary-folder cleanup,
+argument boundaries/exit status, missing Python for both entry points, Python
+paths with spaces, damaged payload rejection and reproducibility/output safety.
+
+Full native run: **112 passed**. A separate GUI smoke invoked the generated
+standalone script from /tmp with a receipt path containing spaces: passed, with
+clean stdout/stderr. All GUI, CRUD, backup, CSV and persistence checks in the
+existing smoke workflow ran through the embedded application. The restricted
+shell run reports 111 passed and one display-dependent skip. POSIX syntax,
+ShellCheck, shfmt and Ruff pass for the new launcher/build/bootstrap/test files.
+The release script has no platform-specific bundled Python binary and no
+third-party runtime dependency. Windows native verification remains separate.

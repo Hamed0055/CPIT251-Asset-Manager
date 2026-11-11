@@ -7,12 +7,20 @@ Software Engineering I.
 package includes code, tests, manuals and fictional demonstration data. Each
 member should extract a separate copy and use their own local database.
 
+## Download the Linux launcher
+
+The [v1.0.0 release](https://github.com/Hamed0055/CPIT251-Asset-Manager/releases/tag/v1.0.0)
+provides a self-contained **linux.sh** asset. Download it and run `sh linux.sh`.
+It works offline after download and requires Python 3.11+, Tk and SQLite 3.37+.
+See the [Linux launcher guide](docs/LINUX_LAUNCHER.md) for data paths, arguments,
+verification and the distinction between the release asset and source launcher.
+
 ## Run on Linux
 
 From this directory:
 
 ```sh
-./scripts/run_linux.sh
+sh linux.sh
 ```
 
 Source use requires Python 3.11+, Tkinter and the Python sqlite3 module backed by

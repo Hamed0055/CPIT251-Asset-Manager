@@ -63,7 +63,7 @@ python -m venv .venv
 Use a graphical desktop for the GUI test. Without display access pytest reports
 an explicit GUI skip; that does not certify the UI. The smoke mode creates its
 own disposable database and never opens the normal inventory. The source
-revision supplied here passed 104 tests and source/frozen Linux GUI smoke checks.
+revision supplied here passed 112 tests and source/frozen Linux GUI smoke checks.
 See docs/TEST_PLAN.md for results and limitations. Internet is needed to install
 development tools unless already cached; running the app itself works offline.
 
@@ -120,3 +120,11 @@ records cannot be deduplicated, so repeated imports can add them again.
 checksum for every other file. Archive integrity and source-code equality were
 checked when creating the ZIP. Generated outputs should be built on the target
 OS; no Windows executable is claimed as tested.
+
+## Single-file Linux release
+
+Download the `linux.sh` asset from Releases > v1.0.0 and run `sh linux.sh`.
+This includes the application, so a Git clone is not required just to run it.
+Python/Tk/SQLite are still system prerequisites. See docs/LINUX_LAUNCHER.md.
+Use a clone and feature branches when developing, rather than editing the
+generated standalone script.
