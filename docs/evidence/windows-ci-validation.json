@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-11",
+  "build_commit": "eedef76e7a68e93e28f1b943230641abbc80744f",
+  "workflow_run": "https://github.com/Hamed0055/CPIT251-Asset-Manager/actions/runs/43030869976",
+  "platform": "Windows Server 2022 x64",
+  "python": "3.14.10",
+  "pytest": "9.0.2",
+  "tests_passed": 106,
+  "linux_only_tests_skipped": 8,
+  "frozen_gui_smoke": "passed",
+  "executable_sha256": "d7ba399d55d8a2fb559681b41bb6d16c645769f6eff92fa717cf9dc8c424185e"
+}

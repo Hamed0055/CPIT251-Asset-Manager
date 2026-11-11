@@ -9,7 +9,7 @@ member should extract a separate copy and use their own local database.
 
 ## Download the Linux launcher
 
-The [v1.0.0 release](https://github.com/Hamed0055/CPIT251-Asset-Manager/releases/tag/v1.0.0)
+The [v1.0.0 release](https://github.com/Hamed0055/CPIT251-Asset-Manager/releases/tag/v1.0.1)
 provides a self-contained **linux.sh** asset. Download it and run `sh linux.sh`.
 It works offline after download and requires Python 3.11+, Tk and SQLite 3.37+.
 See the [Linux launcher guide](docs/LINUX_LAUNCHER.md) for data paths, arguments,
@@ -30,12 +30,12 @@ There are no third-party runtime Python packages.
 
 Generated executables are excluded from this source-only package. Run the
 source, or follow `docs/DEVELOPER_GUIDE.md` to build a native executable.
-A Linux binary was tested before this handoff; Windows still requires a native
-build and runtime check. The source launcher uses the system Python.
+Native Windows builds and GUI execution are now verified on Windows Server
+2022 and Windows 11 Pro in QEMU. See docs/TEST_PLAN.md for actual evidence. The source launcher uses the system Python.
 
 ## Run on Windows
 
-The portable Windows release includes `CPIT251-Asset-Manager.exe` and
+The [v1.0.1 Windows release](https://github.com/Hamed0055/CPIT251-Asset-Manager/releases/tag/v1.0.1) includes `CPIT251-Asset-Manager.exe` and
 `windows.bat`; extract the complete Windows ZIP and open either one. Python is
 bundled in the executable. See [Windows instructions](docs/WINDOWS_LAUNCHER.md).
 In a source checkout you can also run `windows.bat` with installed Python/Tk.

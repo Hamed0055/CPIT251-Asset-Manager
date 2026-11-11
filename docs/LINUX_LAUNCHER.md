@@ -2,7 +2,7 @@
 
 ## One-file download
 
-On the private repository's Releases page, open **v1.0.0** and download the
+On the private repository's Releases page, open **v1.0.1** and download the
 **linux.sh** release asset. It contains the application source and works offline
 after download, without cloning or unpacking a source ZIP yourself.
 

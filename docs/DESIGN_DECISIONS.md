@@ -52,4 +52,5 @@
   moderate scale is 1,000 rows. This is not an unbounded streaming ETL service.
 - **Portability.** Standard-library CSV, pathlib, SQLite, threading/queue and
   Tkinter add no third-party runtime dependency. Linux is verified locally;
-  Windows native build and visual acceptance remain a separate gate.
+  Windows native builds and GUI smoke now pass on Server 2022 and Windows 11;
+  Windows 10 still needs its own runtime check.

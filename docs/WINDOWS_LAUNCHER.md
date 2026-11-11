@@ -46,3 +46,10 @@ for the automated isolated workflow.
 
 This repository is private. Team members must accept a collaborator invitation
 and sign in to download release assets.
+
+## Verified release
+
+Version 1.0.1 passed a native Windows Server 2022 build/test and direct EXE plus
+batch GUI smoke in Windows 11 Pro QEMU. See docs/TEST_PLAN.md and its receipts.
+Windows 10 was not runtime-tested. The release is unsigned and requires no
+installer; team members download it from the existing private repository.

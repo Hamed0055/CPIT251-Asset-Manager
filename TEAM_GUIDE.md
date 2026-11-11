@@ -22,8 +22,9 @@ python main.py --database .\local-data\inventory.sqlite3
 
 If `python` is unavailable but the Python launcher is installed, use `py -3`
 instead of `python`. No database setup command is needed; the app creates it.
-Windows source is portable, but the Windows executable has not been built or
-runtime-tested for this delivery. Follow the Windows gate in docs/TEST_PLAN.md.
+The portable executable is verified on Windows Server 2022 and Windows 11
+Pro in QEMU. Download the v1.0.1 Windows ZIP to run without installing Python.
+See docs/TEST_PLAN.md for results; Windows 10 has not been tested here.
 
 ## Quick start: Linux
 
@@ -123,8 +124,16 @@ OS; no Windows executable is claimed as tested.
 
 ## Single-file Linux release
 
-Download the `linux.sh` asset from Releases > v1.0.0 and run `sh linux.sh`.
+Download the `linux.sh` asset from Releases > v1.0.1 and run `sh linux.sh`.
 This includes the application, so a Git clone is not required just to run it.
 Python/Tk/SQLite are still system prerequisites. See docs/LINUX_LAUNCHER.md.
 Use a clone and feature branches when developing, rather than editing the
 generated standalone script.
+
+## Portable Windows release
+
+Download `CPIT251-Asset-Manager-Windows-x64.zip` from release v1.0.1, extract
+the whole archive, then open `CPIT251-Asset-Manager.exe` or `windows.bat`.
+The executable bundles Python/Tk. Keep the batch launcher beside the executable.
+Native Windows tests passed (106 cases, with eight Linux-only skips); both the
+EXE and batch launcher passed the frozen GUI workflow in Windows 11 QEMU.

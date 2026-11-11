@@ -31,12 +31,13 @@ window, and confirmed deletion. Save, error, and confirmation dialog responses
 are controlled by the smoke harness so it runs without operator input. The
 Linux executable is also exercised from outside the source folder.
 
-## Windows gate still to run
+## Windows native results and repeatable acceptance procedure
 
-The native .exe has not been built or run in this delivery. The local VM was
-not used for this enhancement and was left untouched. No remote
-repository or CI run was created. Static workflow validation does not certify
-a Windows build.
+For v1.0.1 the native Windows Server 2022 workflow built the executable and
+passed 106 tests (eight Linux-only tests skipped) plus the frozen GUI smoke.
+The same executable passed both direct EXE and batch-launcher GUI smoke tests
+in Windows 11 Pro build 26300 under QEMU. Windows 10 has not been tested here.
+The procedure below remains useful for a new target machine or release.
 
 1. On a Windows runner or a Windows 10/11 desktop, install Python 3.14 x64
    with Tk and use the development dependencies listed in the developer guide.
@@ -107,8 +108,9 @@ button height is reserved so shrinking affects the scrollable panes. Horizontal
 scrollbars expose every column and vertical scrollbars expose all preview rows
 and errors. Sample-data category/status combinations were checked by pytest.
 
-Windows acceptance still requires a native build and execution; no Linux test
-is presented as proof of Windows runtime behavior. Add the CSV sample import,
+At the initial CSV-only delivery, Windows acceptance still required a native
+build and execution. The later v1.0.1 results below complete the CI and Windows
+11 gates; no Linux test is presented as proof of Windows execution. Add the CSV sample import,
 preview/cancel, results, export roundtrip and malformed-file flow to the manual
 Windows 10/11 procedure above. `--smoke-test` now includes these core CSV
 callbacks in both source and frozen builds, and the existing Windows build
@@ -138,4 +140,34 @@ existing smoke workflow ran through the embedded application. The restricted
 shell run reports 111 passed and one display-dependent skip. POSIX syntax,
 ShellCheck, shfmt and Ruff pass for the new launcher/build/bootstrap/test files.
 The release script has no platform-specific bundled Python binary and no
-third-party runtime dependency. Windows native verification remains separate.
+third-party runtime dependency. Windows native results follow below.
+
+## v1.0.1 Windows release verification
+
+- Native workflow: [run 43030869976](https://github.com/Hamed0055/CPIT251-Asset-Manager/actions/runs/43030869976),
+  runtime build commit `eedef76e7a68e93e28f1b943230641abbc80744f`.
+- Windows Server 2022 x64, Python 3.14.10, pytest 9.0.2: **106 passed, 8 skipped**
+  (the skips are Linux-only shell tests). Native source batch tests and frozen
+  EXE GUI smoke passed. The workflow produced the EXE and portable Windows ZIP.
+- Windows 11 Pro, build 26300, QEMU: the same EXE SHA256 was verified after
+  transfer. Direct EXE **and** windows.bat each passed the full frozen smoke:
+  GUI, platform data path, create/edit/search/filters, details, report export,
+  backup, deletion confirmation, reopen/persistence, CSV chooser/preview
+  cancellation, responsive worker, rollback/retry, results and full CSV export.
+- The GUI was visually inspected open in Windows 11 with a new training
+  inventory. A Desktop app folder and shortcut were created. The temporary
+  transfer disk was detached; the VM remains running with no disk errors.
+  No guest remote-access service or firewall rule was added.
+- Final Linux regressions for v1.0.1: **112 passed, 2 Windows-only skips** with
+  native desktop access. The regenerated standalone Linux script passed its GUI
+  smoke. Restricted-shell runs explicitly skip the display-dependent case.
+
+Receipts: `evidence/windows-ci-smoke.json`, `evidence/windows-ci-validation.json`,
+`evidence/windows11-qemu-smoke.json` and `evidence/v1.0.1-linux-smoke.json`.
+The CI binary and Windows ZIP were not rebuilt or changed after the guest test.
+Windows CRLF line endings in the packaged batch file are retained; its text
+matches the source launcher after newline normalization.
+
+The executable is unsigned. Windows 10 and other architectures were not tested.
+The verified Windows 11 installation uses a separate fresh training database;
+no production inventory was used by tests.

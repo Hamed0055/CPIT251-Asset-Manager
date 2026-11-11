@@ -10,5 +10,6 @@
   "frozen_gui": "passed, clean log, working directory /tmp",
   "linux_binary_sha256": "c368cd0313392a6894d7f8ae91b271ae0661dec9919a7e1113f00a9e6cd07035",
   "learning_project_status": "unchanged from before-task snapshot",
-  "windows_native": "not built or run; required platform acceptance remains"
+  "windows_native": "not built or run; required platform acceptance remains",
+  "scope": "Historical initial CSV delivery; newer Windows results are in windows-ci-validation.json and windows11-qemu-smoke.json"
 }
