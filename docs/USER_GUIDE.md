@@ -57,3 +57,15 @@ Inventory export contains complete editable records. Detailed report exports
 are also accepted but lack optional fields; aggregate summary reports cannot
 be imported as assets. Back up the database before adding a large batch if you
 want a restore point, especially for serial-less records that cannot be deduplicated.
+
+## Categories, locations and automatic upgrades
+
+Category choices retain the six familiar equipment names and now come from the
+database. In Location, select an existing room or type a new name. Leave it
+blank if unknown. Case and outer spaces reuse the same location; numerical IDs
+never need to be entered. Dashboard, Inventory, Reports and About are unchanged.
+
+Opening an older supported inventory automatically creates a verified backup
+beside it and upgrades storage to v2. A status message names that backup.
+Unsupported or inconsistent files produce an error, not an empty replacement.
+See DATABASE_SCHEMA.md before restoring an older database or launcher.

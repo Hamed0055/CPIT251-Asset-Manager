@@ -29,5 +29,14 @@ runtime, accounts, audit log, or background service.
 | Responsive interface | Worker backend plus queue/after main-thread Tk updates | Delayed-worker GUI timer and close protection checks |
 | Demonstration | 50 fictional assets and mixed-invalid CSV | Sample-file automated test and walkthrough |
 
-CSV extends the existing one-table design without migrations. See CSV_IMPORT.md
+CSV uses readable names over the schema v2 three-table design. See CSV_IMPORT.md
 and the additional class, screen-flow and DFD diagrams in ARCHITECTURE.md.
+
+## Relational v2 requirements
+
+Exactly categories(id, name), locations(id, name), and assets with mandatory
+category_id and optional location_id. Both keys restrict referenced deletion.
+All connections enforce foreign keys. Existing v1 records migrate atomically
+with a verified, non-overwriting pre-upgrade backup. IDs, integer prices,
+timestamps, reports and CSV behavior remain compatible. The independent student
+implementation is outside scope. See RELATIONAL_V2_PLAN.md for acceptance gates.

@@ -19,6 +19,11 @@ def clean_text(values, key, label, limit, required=False):
     return value
 
 
+def location_key(name):
+    """One identity for whitespace/case variants; keep the first display spelling."""
+    return name.strip().casefold()
+
+
 def validate_asset(values):
     name = clean_text(values, "name", "Asset name", 120, required=True)
     category = values.get("category")

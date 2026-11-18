@@ -1,5 +1,8 @@
 # Linux launchers and release
 
+For v2, build a fresh single-file launcher from this checkout using the build
+command below. The existing v1.0.1 download opens v1 inventories.
+
 ## One-file download
 
 On the private repository's Releases page, open **v1.0.1** and download the

@@ -117,6 +117,7 @@ def prepare_import(database, source):
     source, database = Path(source), Path(database).absolute()
     with connect(database, read_only=True) as connection:
         known = serial_keys(connection)
+        categories = {row[0] for row in connection.execute("SELECT name FROM categories")}
     records, issues, first_rows = [], [], []
     seen = {}
     total = 0
@@ -142,6 +143,8 @@ def prepare_import(database, source):
                     cells = dict(zip(headers, row, strict=True))
                     fields = {key: decode_cell(cells.get(header, "")) for header, key in ASSET_COLUMNS if key}
                     values = validate_asset(fields)
+                    if values["category"] not in categories:
+                        raise ValidationError("Choose an equipment category from this inventory.")
                     serial = values["serial_key"]
                     if serial is not None and serial in known:
                         outcome = "Duplicate"

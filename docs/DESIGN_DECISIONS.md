@@ -1,10 +1,11 @@
 # Design decisions and limits
 
-- **Independent reference.** The original project is a read-only reference.
-  This project has its own code, output folder and default database.
-- **One local operator.** One table, short-lived SQLite connections and a
+- **Independent reference.** This reference has a dedicated default database. The
+  team can also use a separate file via `--database`.
+- **One local operator.** Three related tables, short-lived SQLite connections and a
   straightforward GUI keep the CRUD path easy to trace. Concurrent users,
-  authentication, audit history, and schema migrations are outside this scope.
+  authentication and audit history remain outside this scope. Versioned schema
+  migration is now part of initialization.
   Multiple instances can contend for the database and last-write-wins edits
   are possible. Work with one active instance for an inventory.
 - **ID and serial.** SQLite generates stable numeric IDs. The UI formats them
@@ -36,7 +37,7 @@
   distribution. The generated database lives under the current user's data
   root. There is no shared database, installer, or application signing.
 
-- **CSV import is additive.** Keep schema version 1 and reuse manual-entry
+- **CSV import is additive.** Use schema version 2 and reuse manual-entry
   validation plus a shared non-committing insert helper. Confirmed rows commit
   in one transaction; serial collisions are skipped, all other unexpected
   failures roll back. Serial-less assets cannot be reliably deduplicated.
@@ -52,5 +53,18 @@
   moderate scale is 1,000 rows. This is not an unbounded streaming ETL service.
 - **Portability.** Standard-library CSV, pathlib, SQLite, threading/queue and
   Tkinter add no third-party runtime dependency. Linux is verified locally;
-  Windows native builds and GUI smoke now pass on Server 2022 and Windows 11;
-  Windows 10 still needs its own runtime check.
+  Windows native build and visual acceptance remain a separate gate.
+
+- **Three tables, no entity framework.** Categories and locations eliminate
+  repeated identity text; assets stores their foreign keys. Shared functions
+  resolve names and one JOIN projection keeps the public record API stable.
+  There are no new Python entity classes or third-party dependencies.
+- **Safe migration.** A reserved writer lock, verified API backup, atomic DDL
+  and data copy, preserved ID sequence, count/integrity/FK checks and a final
+  version update keep failures recoverable. Unsupported files are never reset.
+- **Location normalization.** Trim and Unicode casefold in Python under a writer
+  lock; retain the first spelling. Built-in SQLite NOCASE adds ASCII uniqueness
+  without a custom collation required by external tools. Opening validates
+  Unicode uniqueness; direct editors must obey the documented rules.
+- **Optional relationship.** Blank locations use NULL, never a synthetic
+  Unknown entry. Both foreign keys restrict referenced lookup deletion.

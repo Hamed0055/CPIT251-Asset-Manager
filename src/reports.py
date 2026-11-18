@@ -5,7 +5,7 @@ from datetime import date
 from pathlib import Path
 
 from config import CATEGORIES, OPERATIONAL, STATUSES
-from src.asset_service import asset_code, format_price
+from src.asset_service import asset_code, format_price, list_assets
 
 REPORT_NAMES = ("Inventory summary", "Aging equipment", "Maintenance and repair")
 SUMMARY_HEADERS = ("Group", "Item", "Count")
@@ -125,3 +125,8 @@ def export_csv(destination, headers, rows):
     except (OSError, csv.Error):
         destination.unlink()
         raise
+
+
+def report_from_database(path, report, current_year=None):
+    """Load the service's JOIN projection; share the established report rules."""
+    return report_table(list_assets(path), report, current_year)

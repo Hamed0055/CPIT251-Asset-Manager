@@ -9,7 +9,7 @@ from src.database import backup_database, connect, initialize
 
 def test_initialize_schema_and_reopen(db, form):
     with connect(db) as connection:
-        assert connection.execute("PRAGMA user_version").fetchone()[0] == 1
+        assert connection.execute("PRAGMA user_version").fetchone()[0] == 2
         indexes = {row["name"] for row in connection.execute("PRAGMA index_list(assets)")}
     assert {"assets_category_idx", "assets_status_idx", "assets_year_idx"} <= indexes
     asset_id = assets.add_asset(db, form)

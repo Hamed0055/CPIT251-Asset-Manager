@@ -7,13 +7,18 @@ Software Engineering I.
 package includes code, tests, manuals and fictional demonstration data. Each
 member should extract a separate copy and use their own local database.
 
-## Download the Linux launcher
+**Version 2.0.0** stores inventory in three SQLite tables: assets, categories
+and locations. On first open, it backs up and migrates an existing v1 inventory.
+Keep that backup if you need to reopen your inventory in v1. See
+[database schema and recovery](docs/DATABASE_SCHEMA.md) and the
+[editable ERD](docs/diagrams/inventory-v2.drawio).
 
-The [v1.0.0 release](https://github.com/Hamed0055/CPIT251-Asset-Manager/releases/tag/v1.0.1)
-provides a self-contained **linux.sh** asset. Download it and run `sh linux.sh`.
-It works offline after download and requires Python 3.11+, Tk and SQLite 3.37+.
-See the [Linux launcher guide](docs/LINUX_LAUNCHER.md) for data paths, arguments,
-verification and the distinction between the release asset and source launcher.
+## Build the single-file Linux launcher
+
+Run `python3 scripts/build_linux_sh.py --output dist/linux.sh` and then
+`sh dist/linux.sh`. The generated launcher works offline with Python 3.11+, Tk
+and SQLite 3.37+. The [Linux launcher guide](docs/LINUX_LAUNCHER.md) explains
+data paths, arguments and verification.
 
 ## Run on Linux
 
@@ -30,16 +35,14 @@ There are no third-party runtime Python packages.
 
 Generated executables are excluded from this source-only package. Run the
 source, or follow `docs/DEVELOPER_GUIDE.md` to build a native executable.
-Native Windows builds and GUI execution are now verified on Windows Server
-2022 and Windows 11 Pro in QEMU. See docs/TEST_PLAN.md for actual evidence. The source launcher uses the system Python.
+The source launcher uses the system Python.
 
 ## Run on Windows
 
-The [v1.0.1 Windows release](https://github.com/Hamed0055/CPIT251-Asset-Manager/releases/tag/v1.0.1) includes `CPIT251-Asset-Manager.exe` and
-`windows.bat`; extract the complete Windows ZIP and open either one. Python is
-bundled in the executable. See [Windows instructions](docs/WINDOWS_LAUNCHER.md).
-In a source checkout you can also run `windows.bat` with installed Python/Tk.
-
+Use `windows.bat` from this checkout with Python and Tk installed. See the
+[Windows launcher guide](docs/WINDOWS_LAUNCHER.md) for native build steps.
+The existing [v1.0.1 downloads](https://github.com/Hamed0055/CPIT251-Asset-Manager/releases/tag/v1.0.1)
+are historical builds. Use a v2 launcher for a migrated v2 inventory.
 
 For source use, install the official Python distribution with the Tcl/Tk
 component, then run `python main.py` in PowerShell. For the standalone
@@ -110,7 +113,8 @@ mixed-validity file is `examples/invalid_inventory.csv`. Read the
 [CSV guide and presentation walkthrough](docs/CSV_IMPORT.md) for headers,
 compatibility, error recovery and examples. The new backend is
 `src/csv_import.py`; its integration tests are in `tests/test_csv_import.py`
-and `tests/test_gui_csv.py`. No schema migration or runtime dependency is needed.
+and `tests/test_gui_csv.py`. Schema migration and rollback tests are in
+`tests/test_relational.py`.
 
 ## Team access and sharing
 
@@ -118,7 +122,8 @@ and `tests/test_gui_csv.py`. No schema migration or runtime dependency is needed
 - Download source ZIP: https://github.com/Hamed0055/CPIT251-Asset-Manager/archive/refs/heads/main.zip
 - Read [TEAM_GUIDE.md](TEAM_GUIDE.md) before contributing.
 
-This repository is private. Invite team members through Settings > Collaborators
+For team-only access, use private repository visibility and invite members through
+Settings > Collaborators
 > Add people. They must accept the invitation and sign in to open these links.
 The ZIP link always downloads the current main branch; use a clone and feature
 branches to contribute changes.

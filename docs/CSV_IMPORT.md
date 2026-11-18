@@ -130,3 +130,14 @@ Choose a different name if that database already exists.
    duplicate serials protects the existing inventory.
 5. Explain the transaction and point to the automated rollback test; do not
    deliberately damage a real inventory to demonstrate a disk failure.
+
+## Schema v2: readable CSV, relational storage
+
+Headers and meanings are unchanged. Category is a configured name, not an ID;
+Location is optional readable text. Preview reads the database category catalogue
+and serial keys but creates neither assets nor locations. Confirmation resolves
+categories to IDs and reuses/creates locations through the shared resolver under
+BEGIN IMMEDIATE. Leading/trailing whitespace and capitalization do not create
+another location; the first display spelling survives. Blank locations use NULL.
+Any unexpected batch error rolls back new locations AND assets. Full inventory
+exports use JOINs to return names and remain importable into a fresh v2 database.

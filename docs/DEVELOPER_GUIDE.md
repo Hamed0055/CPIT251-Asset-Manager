@@ -108,3 +108,42 @@ All imports are statically discoverable by PyInstaller (`gui` imports
 modules). No extra runtime package, data file or hidden-import flag is needed.
 The samples are ordinary external files selected by the operator, not bundled
 resources. The same frozen smoke exercises CSV on Windows when built there.
+
+## Trace relational v2 and migration
+
+Read `database.connect` first: FK enforcement must precede BEGIN. Then follow
+`initialize` -> `backup_database` -> `_migrate_v1`. Do not replace the individual
+DDL calls with executescript; that API can implicitly commit pending work.
+The backup uses a separate reader while the migration owns a reserved writer
+lock. Backup verification is version-aware and does not migrate the backup.
+
+`asset_service.ASSET_QUERY` is the sole readable asset projection (JOIN category,
+LEFT JOIN optional location). `resolve_relationships` is called by manual CRUD
+and confirmed CSV insertion in the same writer transaction. Never commit inside
+this shared helper. Reports reuse the joined projection and existing pure rules.
+The GUI reads lookup choices, while its fields and CSV still contain names.
+
+`tests/fixtures/schema_v1.sql` is the actual pre-upgrade DDL, retained as a test
+fixture rather than a second runtime schema implementation. `test_relational.py`
+covers all 25 relational acceptance scenarios plus Unicode/concurrency, WAL
+backup, deleted-ID high-water and migration failure/retry. Tests compare every
+preserved field, all 50 demonstration records and all reports before/after.
+
+Recreate the editable ERD from actual schema metadata and export with draw.io:
+
+```sh
+PYTHONPATH=. python3 scripts/create_erd.py
+drawio -x -f png -s 3 -b 30 -o docs/diagrams docs/diagrams/inventory-v2.drawio
+```
+
+The renderer requires a graphical session. Entity labels are singular, their
+SQLite table names are included, and cardinalities explicitly distinguish the
+optional location from mandatory category. The architecture class diagram
+labels service/database functions as modules; no fictional entity classes exist.
+
+Build the single-file source-based Desktop launcher using
+`python3 scripts/build_linux_sh.py --output dist/linux.sh` (new filename only).
+Keep its version in sync with the project and frozen executable. A previous
+v1 binary cannot operate on a migrated v2 database. Windows uses the same source
+and database code, with its existing native build/smoke script; Windows build
+verification requires actually running it on Windows, not Linux inference.

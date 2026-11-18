@@ -8,7 +8,7 @@ import tkinter as tk
 from datetime import date
 from tkinter import filedialog, messagebox, ttk
 
-from config import APP_NAME, CATEGORIES, STATUSES, VERSION
+from config import APP_NAME, STATUSES, VERSION
 from src import asset_service as assets
 from src import csv_import, reports
 from src.database import backup_database
@@ -56,6 +56,11 @@ class AssetDialog(tk.Toplevel):
     """Shared form for registration, editing and read-only details."""
 
     def __init__(self, app, title, asset=None, readonly=False):
+        # Resolve choices before creating a window, so a DB error leaves no orphan.
+        categories = assets.category_names(app.path)
+        locations = assets.location_names(app.path)
+        if not categories:
+            raise sqlite3.DatabaseError("The category catalogue is empty.")
         super().__init__(app.root)
         self.app = app
         self.asset = asset
@@ -66,7 +71,7 @@ class AssetDialog(tk.Toplevel):
         self.bind("<Escape>", lambda _event: self.destroy())
 
         initial = dict(asset) if asset else {
-            "category": CATEGORIES[0], "status": STATUSES[0], "purchase_year": date.today().year,
+            "category": categories[0], "status": STATUSES[0], "purchase_year": date.today().year,
         }
         initial["purchase_price"] = assets.format_price(initial.get("price_cents"))
         frame = ttk.Frame(self, padding=18)
@@ -75,16 +80,19 @@ class AssetDialog(tk.Toplevel):
         heading = title if asset is None else f"{title}  /  {assets.asset_code(asset['id'])}"
         ttk.Label(frame, text=heading, style="Heading.TLabel").grid(row=0, column=0, columnspan=2, sticky="w", pady=(0, 10))
         self.fields = {}
+        self.field_widgets = {}
         first_entry = None
         for row, (key, label) in enumerate(FORM_FIELDS, 1):
             ttk.Label(frame, text=label).grid(row=row, column=0, sticky="w", padx=(0, 14), pady=3)
             variable = tk.StringVar(self, value=str(initial.get(key) or ""))
             self.fields[key] = variable
-            if not readonly and key in {"category", "status"}:
-                choices = CATEGORIES if key == "category" else STATUSES
-                widget = ttk.Combobox(frame, values=choices, textvariable=variable, state="readonly")
+            if not readonly and key in {"category", "status", "location"}:
+                choices = {"category": categories, "status": STATUSES, "location": locations}[key]
+                widget = ttk.Combobox(frame, values=choices, textvariable=variable,
+                                      state="normal" if key == "location" else "readonly")
             else:
                 widget = ttk.Entry(frame, textvariable=variable, state="readonly" if readonly else "normal")
+            self.field_widgets[key] = widget
             widget.grid(row=row, column=1, sticky="ew", pady=3)
             if first_entry is None:
                 first_entry = widget
@@ -335,7 +343,7 @@ class InventoryApp:
         ttk.Button(panel, text="Search", command=self.refresh_inventory).grid(row=1, column=1, padx=(0, 8))
         panel.columnconfigure(0, weight=1)
         for column, (name, variable, choices, width) in enumerate((
-            ("Category", self.category, CATEGORIES, 12),
+            ("Category", self.category, (), 12),
             ("Status", self.status_filter, STATUSES, 15),
             ("Year", self.year_filter, (), 5),
         ), 2):
@@ -346,6 +354,8 @@ class InventoryApp:
             combo.bind("<<ComboboxSelected>>", lambda _event: self.refresh_inventory())
             if name == "Year":
                 self.year_choices = combo
+            elif name == "Category":
+                self.category_choices = combo
         ttk.Button(panel, text="Clear", command=self.clear_filters).grid(row=1, column=5)
 
         actions = ttk.Frame(self.inventory)
@@ -433,6 +443,10 @@ class InventoryApp:
             for key, tree in self.dashboard_tables.items():
                 fill_tree(tree, (("Item", 160), ("Count", 85)),
                           ((None, (name, count)) for name, count in summary[key].items()))
+            categories = ("All", *assets.category_names(self.path))
+            self.category_choices.configure(values=categories)
+            if self.category.get() not in categories:
+                self.category.set("All")
             years = ("All", *map(str, assets.purchase_years(self.path)))
             self.year_choices.configure(values=years)
             if self.year_filter.get() not in years:
@@ -469,8 +483,9 @@ class InventoryApp:
     def refresh_reports(self, snapshot=None):
         try:
             if snapshot is None:
-                snapshot = assets.list_assets(self.path)
-            headers, rows = reports.report_table(snapshot, self.report_name.get())
+                headers, rows = reports.report_from_database(self.path, self.report_name.get())
+            else:
+                headers, rows = reports.report_table(snapshot, self.report_name.get())
         except DB_ERRORS as error:
             self.show_error("Report could not be refreshed", error)
             return
@@ -491,19 +506,26 @@ class InventoryApp:
             self.show_error("Asset could not be opened", error)
             return None
 
+    def open_asset_dialog(self, title, asset=None, readonly=False):
+        try:
+            return AssetDialog(self, title, asset, readonly)
+        except DB_ERRORS as error:
+            self.show_error("Asset form could not be opened", error)
+            return None
+
     def add_asset(self):
-        return AssetDialog(self, "Register asset")
+        return self.open_asset_dialog("Register asset")
 
     def edit_asset(self):
         asset = self.selected_record()
         if asset is not None:
-            return AssetDialog(self, "Edit asset", asset)
+            return self.open_asset_dialog("Edit asset", asset)
         return None
 
     def show_details(self):
         asset = self.selected_record()
         if asset is not None:
-            return AssetDialog(self, "Asset details", asset, readonly=True)
+            return self.open_asset_dialog("Asset details", asset, readonly=True)
         return None
 
     def open_clicked_details(self, event):

@@ -12,7 +12,7 @@ from pathlib import Path
 from tkinter import Tk, filedialog, messagebox
 from unittest.mock import patch
 
-from config import DATA_FOLDER, database_path
+from config import CATEGORIES, DATA_FOLDER, database_path
 from src import asset_service as assets
 from src import csv_import
 from src.database import connect, initialize
@@ -43,12 +43,15 @@ def exercise(path, workspace):
 
         with patch.object(messagebox, "showerror", side_effect=fail_dialog):
             dialog = app.add_asset()
+            require(tuple(dialog.field_widgets["category"].cget("values")) == CATEGORIES, "Category choices did not come from the catalogue.")
+            require(str(dialog.field_widgets["location"].cget("state")) == "normal", "Location must allow typing a new name.")
             dialog.save_button.invoke()
             require(dialog.winfo_exists() and "required" in errors[-1][1], "Invalid form did not remain open.")
             dialog.fields["name"].set("Demo Laptop")
             dialog.fields["serial"].set("DEMO-001")
             dialog.fields["category"].set("Laptop")
             dialog.fields["purchase_price"].set("1200.75")
+            dialog.fields["location"].set("  Smoke Lab  ")
             dialog.notes.insert("1.0", "Temporary smoke data")
             dialog.save_button.invoke()
             require(not dialog.winfo_exists(), "Registration did not close the dialog.")
@@ -57,6 +60,7 @@ def exercise(path, workspace):
             asset_id = int(item)
 
             duplicate = app.add_asset()
+            require(tuple(duplicate.field_widgets["location"].cget("values")) == ("Smoke Lab",), "Saved locations did not become selectable.")
             duplicate.fields["name"].set("Duplicate")
             duplicate.fields["serial"].set(" demo-001 ")
             duplicate.save_button.invoke()
@@ -82,7 +86,10 @@ def exercise(path, workspace):
             edit = app.edit_asset()
             edit.fields["status"].set("Under Maintenance")
             edit.fields["name"].set("Demo Laptop Updated")
+            edit.fields["location"].set("smoke lab")
             edit.save_button.invoke()
+            require(assets.location_names(path) == ("Smoke Lab",), "Editing created a duplicate location.")
+            require(assets.get_asset(path, asset_id)["location"] == "Smoke Lab", "Read projection lost the display name.")
             require(app.metrics["repair"].get() == "1", "Dashboard did not reflect edited status.")
             app.tabs.select(app.reporting)
             app.report_name.set(REPORT_NAMES[2])
@@ -257,6 +264,10 @@ def write_receipt(receipt):
                 # closed ones on the main thread before starting any workers.
                 gc.collect()
                 exercise_csv(workspace / "csv.sqlite3", workspace)
+                with connect(path) as connection:
+                    require(connection.execute("PRAGMA user_version").fetchone()[0] == 2, "Wrong schema version.")
+                    require(connection.execute("PRAGMA foreign_keys").fetchone()[0] == 1, "Foreign keys disabled.")
+                    require(not connection.execute("PRAGMA foreign_key_check").fetchall(), "Orphaned assets.")
         except Exception as error:  # noqa: BLE001 - frozen smoke boundary writes a receipt
             result = {"passed": False, "error": str(error), "platform": sys.platform}
         else:
@@ -267,7 +278,8 @@ def write_receipt(receipt):
                 "checks": ["GUI", "platform data path", "validation", "create", "search", "filters", "details",
                            "update", "report", "CSV", "cancel deletion", "backup", "reopen", "confirmed deletion",
                            "CSV chooser cancel", "CSV preview cancel", "CSV responsive worker", "CSV rollback/retry",
-                           "CSV import/results", "CSV view refresh", "full inventory export", "CSV duplicate skip", "CSV file errors"],
+                           "CSV import/results", "CSV view refresh", "full inventory export", "CSV duplicate skip", "CSV file errors",
+                           "database category choices", "editable location choices", "shared normalized location", "schema 2 integrity"],
             }
     receipt.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     return 0 if result["passed"] else 1

@@ -27,13 +27,15 @@ def main():
         print(f"Cannot open the desktop window: {error}", file=sys.stderr)
         return 1
     try:
-        initialize(path)
+        migration_backup = initialize(path)
     except (sqlite3.Error, OSError) as error:
         root.withdraw()
         messagebox.showerror("Inventory database could not be opened", f"{path}\n\n{error}", parent=root)
         root.destroy()
         return 1
-    InventoryApp(root, path)
+    app = InventoryApp(root, path)
+    if migration_backup is not None:
+        app.notice.set(f"Inventory upgraded to schema 2. Original backup: {migration_backup.name}")
     root.mainloop()
     return 0
 

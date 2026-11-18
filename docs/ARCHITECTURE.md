@@ -19,6 +19,8 @@ flowchart LR
     GUI --> R[Reports and CSV]
     R --> Export[CSV file]
     GUI --> D
+    Main --> D
+    R --> S
     D --> Backup[SQLite backup file]
 ```
 
@@ -53,27 +55,56 @@ flowchart LR
 
 ## Entity relationship diagram
 
+The editable [draw.io ERD](diagrams/inventory-v2.drawio) and
+[high-resolution PNG](diagrams/inventory-v2.png) are generated from the actual
+v2 table metadata by `scripts/create_erd.py`.
+
 ```mermaid
 erDiagram
-    ASSETS {
+    CATEGORY ||--o{ ASSET : classifies
+    LOCATION |o--o{ ASSET : contains
+    CATEGORY {
+        integer id PK
+        text name UK
+    }
+    LOCATION {
+        integer id PK
+        text name UK
+    }
+    ASSET {
         integer id PK
         text name
-        text category
+        integer category_id FK
+        integer location_id FK
         text serial
         text serial_key UK
         integer purchase_year
         integer price_cents
         text status
         text assigned_to
-        text location
         text notes
         text created_at
         text updated_at
     }
 ```
 
-The system has one business entity. See the schema document for nullability,
-money storage and internal SQLite metadata.
+CATEGORY, LOCATION and ASSET are database entities, not Python classes.
+`category_id` is mandatory; `location_id` is optional. Both references use
+ON DELETE RESTRICT. See DATABASE_SCHEMA.md for all constraints.
+
+## Relational service flow
+
+Tkinter GUI -> Asset Service -> SQLite Database. Forms read category choices
+from categories and allow either an existing or new location name. Validation
+keeps the established rules. Add/edit and confirmed CSV batches begin an
+IMMEDIATE transaction before resolving names. The database helper looks up the
+category ID and reuses or creates a trimmed/casefolded location. A blank
+location becomes NULL. The asset insert/update and any new location commit or
+roll back together. No GUI operator enters numerical foreign keys.
+
+Read operations JOIN categories and LEFT JOIN optional locations, exposing the
+same readable fields as v1 to tables, dashboards and CSV. Reports summarize the
+joined snapshot; `report_from_database` loads it through that same service.
 
 ## Registration activity
 
@@ -124,6 +155,7 @@ sequenceDiagram
         Form-->>Operator: Show message, keep form open
     else Valid input
         Validate-->>Service: Validated values
+        Service->>DB: BEGIN IMMEDIATE and resolve category/location IDs
         Service->>DB: Bound UPDATE for asset ID
         alt Constraint, missing asset, or storage error
             DB-->>Service: Error or zero affected rows
@@ -139,8 +171,8 @@ sequenceDiagram
 
 ## CSV feature: components and data flow (DFD level 1)
 
-The enhancement adds no table or schema version. The report exporter remains;
-`export_inventory` supplies the missing full-record interchange format.
+Schema v2 keeps CSV fields readable while normalizing persistent storage.
+The full inventory exporter remains distinct from report-specific exports.
 
 ```mermaid
 flowchart LR
@@ -149,15 +181,18 @@ flowchart LR
     GUI -->|Worker prepares snapshot| Parser
     Parser --> Validator[Existing validate_asset]
     Validator --> Dedup[Serial duplicate detection]
-    DB[(Existing assets table)] -->|Read-only serial keys| Dedup
+    DB[(D1: SQLite inventory store - assets, categories, locations)] -->|Read-only serial keys| Dedup
     Dedup --> Preview[Immutable ImportPreview]
     Preview -->|Queue / main thread| Dialog[ImportPreviewDialog]
     Dialog -->|Explicit confirmation| Batch[import_prepared]
     Batch -->|Revalidate / recheck serials| Tx[BEGIN IMMEDIATE]
-    Tx -->|Shared parameterized insert| DB
+    Tx -->|Resolve category and location, then insert asset| DB
     Tx --> Result[Commit all or rollback all]
     Result -->|Queue / main thread| Views[Results and refreshed views]
 ```
+
+D1 is one logical persistent data store with three relational tables, not
+three DFD processes. Parser, validation and batch insertion are processes.
 
 This is the required pipeline: **CSV File -> CSV Parser -> Validation ->
 Duplicate Detection -> SQLite Transaction -> GUI Refresh**. Preparation is
@@ -180,6 +215,18 @@ classDiagram
         export_inventory()
         refresh()
     }
+    class AssetDialog {
+        fields
+        field_widgets
+        save()
+    }
+    class DatabaseModule {
+        <<module>>
+        connect()
+        initialize()
+        resolve_relationships()
+        backup_database()
+    }
     class ImportPreviewDialog {
         confirm()
         close()
@@ -196,6 +243,9 @@ classDiagram
         <<module>>
         add_asset()
         insert_validated_asset()
+        category_names()
+        location_names()
+        list_assets()
     }
     class ImportPreview {
         <<frozen dataclass>>
@@ -230,6 +280,9 @@ classDiagram
         inserted
         issues
     }
+    InventoryApp --> AssetDialog
+    AssetDialog --> AssetServiceModule
+    AssetServiceModule --> DatabaseModule
     InventoryApp --> ImportPreviewDialog
     InventoryApp --> CSVImportModule
     ImportPreviewDialog --> ImportPreview

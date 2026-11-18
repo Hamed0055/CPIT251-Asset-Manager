@@ -1,5 +1,8 @@
 # Windows portable release
 
+For v2, build the executable from this checkout using the instructions below.
+The existing v1.0.1 ZIP opens v1 inventories.
+
 Download the Windows portable ZIP from the private GitHub release, extract the
 whole ZIP to a writable folder, then double-click `CPIT251-Asset-Manager.exe`
 or `windows.bat`. The executable bundles Python/Tk and does not require a Python

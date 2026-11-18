@@ -1,5 +1,26 @@
 # Test plan and execution record
 
+## v2.0.0 team source update
+
+The Linux team checkout passed 138 pytest cases in a graphical session. The
+two Windows-only launcher cases were skipped. The source launcher and the
+generated standalone Linux launcher each passed all 27 GUI smoke checks with
+disposable inventories. The tests cover database migration and rollback, the
+three-table schema, inventory operations, and CSV import and export.
+
+To reproduce from the project root in a graphical session:
+
+```sh
+python3 -m pytest -q -rs
+./linux.sh --smoke-test /tmp/cpit251-v2-source.json
+python3 scripts/build_linux_sh.py --output dist/linux.sh
+sh dist/linux.sh --smoke-test /tmp/cpit251-v2-portable.json
+```
+
+Windows v2 remains to be tested on Windows. The results below cover v1 builds.
+
+## Historical v1 evidence
+
 Test data is fictional or generated with pytest's temporary directory fixtures.
 The GUI smoke mode overrides the OS user-data root inside its process and
 cleans up the disposable inventory after testing.
